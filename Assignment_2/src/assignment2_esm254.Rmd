@@ -47,11 +47,21 @@ ggplot(data = gray, aes(y= estimated_abundance, x = year)) +
 ## Model 1: Logistic ####
 
 ```{r}
+
 pars <- c(0.01, 10000)# r and K initial test values
 
 model1 <- function(pars, dat) {
   
-  # add your code here
+  r <- pars[1]
+  K <- pars[2]
+  
+  predicted_N <- rep(NA, length(dat$year))
+  
+  predicted_N[1] <- K
+  
+  for (i in 2:length(dat$year)) {
+    predicted_N[i] <- predicted_N[i-1] + r * predicted_N[i-1] * (1 - (predicted_N[i-1] / K)) - dat$catches[i-1]
+  }
   
   return(predicted_N)
 }
@@ -61,9 +71,20 @@ model1 <- function(pars, dat) {
 
 mod1_predN <- model1(pars=pars, dat=gray)
 
-```
+# Add your plot code here
+plot(x=gray$year, 
+     y=mod1_predN,
+     type="l",
+     ylim=c(0,30000),
+     xlab="Year",
+     ylab="Abundance",
+     lwd=2)
 
-# add plot code here
+points(x=gray$year,
+       y=gray$estimated_abundance,
+       pch=19)
+
+```
 
 
 
