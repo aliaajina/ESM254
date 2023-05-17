@@ -1,17 +1,45 @@
 ---
-title: "assignment_2_esm254"
+title: "Assignment 2 ESM 254"
 author: "Alia Ajina"
-date: "2023-05-17"
-output: html_document
+date: "May 17th, 2023"
+output:
+  html_document:
+    toc: yes
+    toc_float: yes
+    theme: journal
+    code_folding: show
+    smooth_scroll: yes
+    collapsed: yes
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+
+library(here)
+library(tidyverse)
+library(janitor)
 ```
 
 #### Part 1: Data ####
 
-# add your code here
+```{r}
+# Reading in the data
+gray <- read_csv(here("assignment_2","data", "gray_whales.csv")) %>% 
+  clean_names()
+```
+
+```{r}
+# plot catch data over time
+ggplot(data = gray, aes(y=catches, x = year)) + 
+  geom_line() + theme_gray() + 
+  labs(x= "Year", y = "Estimated Gray Whale Catches")
+
+# plot abundance data over time
+ggplot(data = gray, aes(y= estimated_abundance, x = year)) + 
+  geom_point(color = "#4683B7") + theme_gray() + 
+  labs(x = "Year", y = "Estimated Gray Whale Abundance")
+
+```
 
 
 #### Part 2: Model hypotheses ####
@@ -142,9 +170,12 @@ model3 <- function(pars, dat) {
 # Also, a way to test that our function is working correctly
 
 mod3_predN <- model3(pars, gray)
-```
 
 # add your plot code here
+
+```
+
+
 
 
 #### Statistical Model 3 Code - Estimating best parameter estimates ####
@@ -174,9 +205,11 @@ best.param3[,1]
 
 # Plot how well these predictions fit to the data when using best param estimates
 mod3best_predN <- model3(pars=best.param3[,1], gray)
-```
 
 # add your plot code here
+```
+
+
 
 
 ## Model 4: Pella-Tomlinson 0.5-0.9K with N0 #### 
@@ -194,9 +227,12 @@ model4 <- function(pars, dat) {
 # Also, a way to test that our function is working correctly
 
 mod4_predN <- model4(pars, gray)
-```
 
 # add your plot code here
+
+```
+
+
 
 
 #### Statistical Model 4 Code - Estimating best parameter estimates ####
@@ -251,9 +287,12 @@ model5 <- function(pars, dat) {
 # Also, a way to test that our function is working correctly
 
 mod5_predN <- model5(pars,gray)
-```
 
 # add your plot code here
+
+```
+
+
 
 
 
@@ -281,8 +320,9 @@ exp(best.param5)
 
 # Plot how well these predictions fit to the data when using best param estimates
 mod5best_predN <- model5(best.param5, gray)
-```
+
 # add your plot code here
+```
 
 
 ## Model 6: Pella-Tomlinson with inflated catches ####
