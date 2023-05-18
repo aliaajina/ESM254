@@ -93,15 +93,15 @@ points(x=gray$year,
 
 
 ```{r}
-# Remove rows with NA in the Estimated.abundance column
-gray_subset <- gray[!is.na(gray$Estimated.abundance), ]
+# Remove rows with NA in the estimated_abundance column
+gray_subset <- gray[!is.na(gray$estimated_abundance), ]
 
 # Subset catch_data and years to match the subsetted data
-catch_data <- gray$Catches[!is.na(gray$Estimated.abundance)]
-years <- gray$Year[!is.na(gray$Estimated.abundance)]
+catch_data <- gray$catches[!is.na(gray$estimated_abundance)]
+years <- gray$year[!is.na(gray$estimated_abundance)]
 
 # The statistical model
-model_1 <- nls(Estimated.abundance ~ model1(pars, gray_subset),
+model_1 <- nls(estimated_abundance ~ model1(pars, gray_subset),
              data = gray_subset,
              start = list(pars = pars),
              algorithm = "port",
@@ -147,15 +147,15 @@ mod2_predN <- model2(pars, gray)
 # Written for your review, no need to edit it for this assignment
 
 ```{r}
-# Remove rows with NA in the Estimated.abundance column
-gray_subset <- gray[!is.na(gray$Estimated.abundance), ]
+# Remove rows with NA in the estimated_abundance column
+gray_subset <- gray[!is.na(gray$estimated_abundance), ]
 
 # Subset catch_data and years to match the subsetted data
-catch_data <- gray$Catches[!is.na(gray$Estimated.abundance)]
-years <- gray$Year[!is.na(gray$Estimated.abundance)]
+catch_data <- gray$catches[!is.na(gray$estimated_abundance)]
+years <- gray$year[!is.na(gray$estimated_abundance)]
 
 # The statistical model! 
-model_2 <- nls(Estimated.abundance ~ model2(pars, gray_subset),
+model_2 <- nls(estimated_abundance ~ model2(pars, gray_subset),
              data = gray_subset,
              start = list(pars = pars),
              algorithm = "port",
@@ -169,8 +169,8 @@ best.param2 <- summary(model_2)$parameters
 best.param2[,1]
 
 # Plot how well these predictions fit to the data when using best param estimates
-mod2best_predN <- model2(pars=best.param2[,1], gray$Catches, gray$Year)
-lines(x=gray$Year, y=mod2best_predN, lwd=2, col="red")
+mod2best_predN <- model2(pars=best.param2[,1], gray$catches, gray$year)
+lines(x=gray$year, y=mod2best_predN, lwd=2, col="red")
 ```
 
 
@@ -203,15 +203,15 @@ mod3_predN <- model3(pars, gray)
 # Written for your review, no need to edit it for this assignment
 
 ```{r}
-# Remove rows with NA in the Estimated.abundance column
-gray_subset <- gray[!is.na(gray$Estimated.abundance), ]
+# Remove rows with NA in the estimated_abundance column
+gray_subset <- gray[!is.na(gray$estimated_abundance), ]
 
 # Subset catch_data and years to match the subsetted data
-catch_data <- gray$Catches[!is.na(gray$Estimated.abundance)]
-years <- gray$Year[!is.na(gray$Estimated.abundance)]
+catch_data <- gray$catches[!is.na(gray$estimated_abundance)]
+years <- gray$year[!is.na(gray$estimated_abundance)]
 
 # The statistical model! 
-model_3 <- nls(Estimated.abundance ~ model3(pars, gray_subset),
+model_3 <- nls(estimated_abundance ~ model3(pars, gray_subset),
                data = gray_subset,
                start = list(pars = pars),
                algorithm = "port",
@@ -260,15 +260,15 @@ mod4_predN <- model4(pars, gray)
 # Written for your review, no need to edit it for this assignment
 
 ```{r}
-# Remove rows with NA in the Estimated.abundance column
-gray_subset <- gray[!is.na(gray$Estimated.abundance), ]
+# Remove rows with NA in the estimated_abundance column
+gray_subset <- gray[!is.na(gray$estimated_abundance), ]
 
 # Subset catch_data and years to match the subsetted data
-catch_data <- gray$Catches[!is.na(gray$Estimated.abundance)]
-years <- gray$Year[!is.na(gray$Estimated.abundance)]
+catch_data <- gray$catches[!is.na(gray$estimated_abundance)]
+years <- gray$year[!is.na(gray$estimated_abundance)]
 
 # The statistical model! 
-model_4 <- nls(Estimated.abundance ~ model4(pars, gray_subset),
+model_4 <- nls(estimated_abundance ~ model4(pars, gray_subset),
                data = gray_subset,
                start = list(pars = pars),
                algorithm = "port",
@@ -283,7 +283,7 @@ best.param4[,1]
 
 # Plot how well these predictions fit to the data when using best param estimates
 mod4best_predN <- model4(pars=best.param4[,1], gray)
-lines(x=gray$Year, y=mod4best_predN, lwd=2, col="red")
+lines(x=gray$year, y=mod4best_predN, lwd=2, col="red")
 ```
 
 
