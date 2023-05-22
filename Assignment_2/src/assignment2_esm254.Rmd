@@ -84,15 +84,10 @@ points(x=gray$year,
        y=gray$estimated_abundance,
        pch=19)
 
-```
-
-
 
 #### Statistical Model 1 Code - Estimating best parameter estimates ####
 # Written for your review, no need to edit it for this assignment
 
-
-```{r}
 # Remove rows with NA in the estimated_abundance column
 gray_subset <- gray[!is.na(gray$estimated_abundance), ]
 
@@ -116,9 +111,10 @@ best.param1[,1]
 
 # Plot how well these predictions fit to the data when using best param estimates
 mod1best_predN <- model1(pars=best.param1[,1], gray)
+lines(x=gray$year, y=mod1best_predN, lwd=2, col="blue")
+
 ```
 
-# add plot code here to add this as a line to your plot
 
 
 
@@ -129,7 +125,16 @@ pars <- c(0.01, 10000)# initial test values
 
 model2 <- function(pars, dat) {
   
-  # add your code here
+  r <- pars[1]
+  K <- pars[2]
+  
+  predicted_N <- rep(NA, length(dat$year))
+  
+  predicted_N[1] <- K
+  
+  for (i in 2:length(dat$year)) {
+    predicted_N[i] <- predicted_N[i-1] + r * predicted_N[i-1] * (1 - (predicted_N[i-1] / K)^2.39) - dat$catches[i-1]
+  }
   
   return(predicted_N)
 }
@@ -138,15 +143,24 @@ model2 <- function(pars, dat) {
 # Also, a way to test that our function is working correctly
 
 mod2_predN <- model2(pars, gray)
-```
 
-# add your plot code here
+# Plot code
+plot(x=gray$year, 
+     y=mod2_predN,
+     type="l",
+     ylim=c(0,30000),
+     xlab="Year",
+     ylab="Abundance",
+     lwd=2)
+
+points(x=gray$year,
+       y=gray$estimated_abundance,
+       pch=19)
 
 
 #### Statistical Model 2 Code - Estimating best parameter estimates ####
 # Written for your review, no need to edit it for this assignment
 
-```{r}
 # Remove rows with NA in the estimated_abundance column
 gray_subset <- gray[!is.na(gray$estimated_abundance), ]
 
@@ -169,7 +183,8 @@ best.param2 <- summary(model_2)$parameters
 best.param2[,1]
 
 # Plot how well these predictions fit to the data when using best param estimates
-mod2best_predN <- model2(pars=best.param2[,1], gray$catches, gray$year)
+# i have to include this in the code chunk above because line plots on an exisiting graph - have to finish the graph first, then check the arguments
+mod2best_predN <- model2(pars=best.param2[,1], gray) # double check here with her current r template
 lines(x=gray$year, y=mod2best_predN, lwd=2, col="red")
 ```
 
@@ -177,12 +192,23 @@ lines(x=gray$year, y=mod2best_predN, lwd=2, col="red")
 ## Model 3: Pella-Tomlinson 0.5-0.9K ####
 
 ```{r}
+# need to edit this one
 
 pars <- c(0.01, 10000, 35) # initial test values
 
 model3 <- function(pars, dat) {
   
- # add your code here
+  
+  r <- pars[1]
+  K <- pars[2]
+  
+  predicted_N <- rep(NA, length(dat$year))
+  
+  predicted_N[1] <- K
+  
+  for (i in 2:length(dat$year)) {
+    predicted_N[i] <- predicted_N[i-1] + r * predicted_N[i-1] * (1 - (predicted_N[i-1] / K)) - dat$catches[i-1]
+  }
   
   return(predicted_N)
 }

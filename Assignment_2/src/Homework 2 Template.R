@@ -97,7 +97,7 @@ best.param2 <- summary(model_2)$parameters
 best.param2[,1]
 
 # Plot how well these predictions fit to the data when using best param estimates
-mod2best_predN <- model2(pars=best.param2[,1], gray$Catches, gray$Year)
+mod2best_predN <- model2(pars=best.param2[,1], gray)
 lines(x=gray$Year, y=mod2best_predN, lwd=2, col="red")
 
 ## Model 3: Pella-Tomlinson 0.5-0.9K ####
