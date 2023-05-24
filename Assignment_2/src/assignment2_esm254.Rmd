@@ -201,13 +201,14 @@ model3 <- function(pars, dat) {
   
   r <- pars[1]
   K <- pars[2]
+  z <- pars[3]
   
   predicted_N <- rep(NA, length(dat$year))
   
   predicted_N[1] <- K
   
   for (i in 2:length(dat$year)) {
-    predicted_N[i] <- predicted_N[i-1] + r * predicted_N[i-1] * (1 - (predicted_N[i-1] / K)) - dat$catches[i-1]
+    predicted_N[i] <- predicted_N[i-1] + r * predicted_N[i-1] * (1 - (predicted_N[i-1] / K)^z) - dat$catches[i-1]
   }
   
   return(predicted_N)
@@ -220,15 +221,23 @@ mod3_predN <- model3(pars, gray)
 
 # add your plot code here
 
-```
+plot(x=gray$year, 
+     y=mod3_predN,
+     type="l",
+     ylim=c(0,30000),
+     xlab="Year",
+     ylab="Abundance",
+     lwd=2)
 
-
+points(x=gray$year,
+       y=gray$estimated_abundance,
+       pch=19)
 
 
 #### Statistical Model 3 Code - Estimating best parameter estimates ####
 # Written for your review, no need to edit it for this assignment
 
-```{r}
+
 # Remove rows with NA in the estimated_abundance column
 gray_subset <- gray[!is.na(gray$estimated_abundance), ]
 
@@ -237,6 +246,7 @@ catch_data <- gray$catches[!is.na(gray$estimated_abundance)]
 years <- gray$year[!is.na(gray$estimated_abundance)]
 
 # The statistical model! 
+## issue with statistical model here!!!!!
 model_3 <- nls(estimated_abundance ~ model3(pars, gray_subset),
                data = gray_subset,
                start = list(pars = pars),
@@ -252,8 +262,8 @@ best.param3[,1]
 
 # Plot how well these predictions fit to the data when using best param estimates
 mod3best_predN <- model3(pars=best.param3[,1], gray)
+lines(x=gray$year, y=mod3best_predN, lwd=2, col="red")
 
-# add your plot code here
 ```
 
 
@@ -265,6 +275,18 @@ pars <- c(0.01, 10000, 35, 10000) # initial test values
 
 model4 <- function(pars, dat) {
   
+  r <- pars[1]
+  K <- pars[2]
+  z <- pars[3]
+  N0 <- pars[4]
+  
+  predicted_N <- rep(NA, length(dat$year))
+  
+  predicted_N[1] <- N0
+  
+  for (i in 2:length(dat$year)) {
+    predicted_N[i] <- predicted_N[i-1] + r * predicted_N[i-1] * (1 - (predicted_N[i-1] / K)^z) - dat$catches[i-1]
+  }
   # add your code here
   
   return(predicted_N)
@@ -277,15 +299,23 @@ mod4_predN <- model4(pars, gray)
 
 # add your plot code here
 
-```
+plot(x=gray$year, 
+     y=mod4_predN,
+     type="l",
+     ylim=c(0,30000),
+     xlab="Year",
+     ylab="Abundance",
+     lwd=2)
 
-
+points(x=gray$year,
+       y=gray$estimated_abundance,
+       pch=19)
 
 
 #### Statistical Model 4 Code - Estimating best parameter estimates ####
 # Written for your review, no need to edit it for this assignment
 
-```{r}
+
 # Remove rows with NA in the estimated_abundance column
 gray_subset <- gray[!is.na(gray$estimated_abundance), ]
 
@@ -327,6 +357,14 @@ model5 <- function(pars, dat) {
  
   # add your code here, I set up the params for you this time
   
+  predicted_N <- rep(NA, length(dat$year))
+  
+  predicted_N[1] <- K
+  
+  for (i in 2:length(dat$year)) {
+    predicted_N[i] <- predicted_N[i-1] + r * predicted_N[i-1] * (1 - (predicted_N[i-1] / K)^z) - dat$catches[i-1]
+  }
+  
   return(predicted_N)
 }
 
@@ -337,16 +375,22 @@ mod5_predN <- model5(pars,gray)
 
 # add your plot code here
 
-```
+plot(x=gray$year, 
+     y=mod5_predN,
+     type="l",
+     ylim=c(0,100000),
+     xlab="Year",
+     ylab="Abundance",
+     lwd=2)
 
-
-
-
+points(x=gray$year,
+       y=gray$estimated_abundance,
+       pch=19)
 
 #### Statistical Model 5 Code - Estimating best parameter estimates ####
 # Written for your review, no need to edit it for this assignment
 
-```{r}
+
 
 # The statistical model! 
 fn_opt <- function(pars,tdat=gray) { # short hand for "function to optimize"
@@ -367,8 +411,8 @@ exp(best.param5)
 
 # Plot how well these predictions fit to the data when using best param estimates
 mod5best_predN <- model5(best.param5, gray)
+lines(x=gray$year, y=mod5best_predN, lwd = 2, col="red")
 
-# add your plot code here
 ```
 
 
@@ -387,6 +431,19 @@ model6 <- function(pars, dat) {
   x <- pars[3]
   
  # add your code here
+   
+  predicted_N <- rep(NA, length(dat$year))
+  
+  predicted_N[1] <- K
+  
+  if(dat$year <= 1950)
+    for (i in 2:length(dat$year)) {
+    predicted_N[i] <- predicted_N[i-1] + r * predicted_N[i-1] * (1 - (predicted_N[i-1] / K)^z) - dat$catches[i-1]*x
+    
+  if(dat$year > 1950)
+    for (i in 2:length(dat$year)) {
+    predicted_N[i] <- predicted_N[i-1] + r * predicted_N[i-1] * (1 - (predicted_N[i-1] / K)^z) - dat$catches[i-1]
+  }
   
   return(predicted_N)
 }
@@ -397,7 +454,7 @@ model6 <- function(pars, dat) {
 # Also, a way to test that our function is working correctly
 
 mod6_predN <- model6(pars,gray)
-```
+
 
 # add your plot code here
 
@@ -406,7 +463,7 @@ mod6_predN <- model6(pars,gray)
 #### Statistical Model 6 Code - Estimating best parameter estimates ####
 # Written for your review, no need to edit it for this assignment
 
-```{r}
+
 # The statistical model! 
 fn_opt <- function(pars,tdat=gray) {
   
@@ -425,7 +482,8 @@ best.param6 <- model_6$par
 exp(best.param6)
 
 # Plot how well these predictions fit to the data when using best param estimates
-mod6best_predN <- model6(best.param6, gray)
+mod6best_predN <- model6(best.param6[,1], gray)
+lines(x=gray$year, y=mod6best_predN, lwd=2, col="red")
 ```
 
 # add your plot code here
