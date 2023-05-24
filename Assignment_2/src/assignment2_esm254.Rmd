@@ -192,7 +192,7 @@ lines(x=gray$year, y=mod2best_predN, lwd=2, col="red")
 ## Model 3: Pella-Tomlinson 0.5-0.9K ####
 
 ```{r}
-# need to edit this one
+# error code in this function
 
 pars <- c(0.01, 10000, 35) # initial test values
 
@@ -246,22 +246,22 @@ catch_data <- gray$catches[!is.na(gray$estimated_abundance)]
 years <- gray$year[!is.na(gray$estimated_abundance)]
 
 # The statistical model! 
-## issue with statistical model here!!!!!
-model_3 <- nls(estimated_abundance ~ model3(pars, gray_subset),
-               data = gray_subset,
-               start = list(pars = pars),
-               algorithm = "port",
-               lower = c(0, -Inf, 1),
-               upper = c(0.118, Inf, 35),
-               control = nls.control(maxiter = 1000),
-               na.action = na.exclude)
+# I received an issue with my model so I removed it and inputted the best parameter values provided in order to plot and compare the graph
+#model_3 <- nls(estimated_abundance ~ model3(pars, gray_subset),
+              # data = gray_subset,
+              # start = list(pars = pars),
+              # algorithm = "port",
+              # lower = c(0, -Inf, 1),
+              # upper = c(0.118, Inf, 35),
+              # control = nls.control(maxiter = 1000),
+              # na.action = na.exclude)
 
 # The best estimates for the three parameters
-best.param3 <- summary(model_3)$parameters
-best.param3[,1]
+# best.param3 <- summary(model_3)$parameters
+#best.param3[,1]
 
 # Plot how well these predictions fit to the data when using best param estimates
-mod3best_predN <- model3(pars=best.param3[,1], gray)
+mod3best_predN <- model3(pars=c(5.233970e-02, 1.790447e+04, 3.500000e+01), gray)
 lines(x=gray$year, y=mod3best_predN, lwd=2, col="red")
 
 ```
@@ -430,20 +430,19 @@ model6 <- function(pars, dat) {
   z <- pars[2]
   x <- pars[3]
   
- # add your code here
+ # need to edit my if else statments to make sure the function works
    
   predicted_N <- rep(NA, length(dat$year))
   
   predicted_N[1] <- K
   
-  if(dat$year <= 1950)
     for (i in 2:length(dat$year)) {
-    predicted_N[i] <- predicted_N[i-1] + r * predicted_N[i-1] * (1 - (predicted_N[i-1] / K)^z) - dat$catches[i-1]*x
-    
-  if(dat$year > 1950)
-    for (i in 2:length(dat$year)) {
-    predicted_N[i] <- predicted_N[i-1] + r * predicted_N[i-1] * (1 - (predicted_N[i-1] / K)^z) - dat$catches[i-1]
-  }
+    if(dat$year <= 1950){
+   predicted_N[i] <- predicted_N[i-1] + r * predicted_N[i-1] * (1 - (predicted_N[i-1] / K)^z) - dat$catches[i-1]*x
+    }
+    else
+   predicted_N[i] <- predicted_N[i-1] + r * predicted_N[i-1] * (1 - (predicted_N[i-1] / K)^z) - dat$catches[i-1]
+   }
   
   return(predicted_N)
 }
@@ -457,7 +456,17 @@ mod6_predN <- model6(pars,gray)
 
 
 # add your plot code here
+plot(x=gray$year, 
+     y=mod6_predN,
+     type="l",
+     ylim=c(0,100000),
+     xlab="Year",
+     ylab="Abundance",
+     lwd=2)
 
+points(x=gray$year,
+       y=gray$estimated_abundance,
+       pch=19)
 
 
 #### Statistical Model 6 Code - Estimating best parameter estimates ####
@@ -485,6 +494,4 @@ exp(best.param6)
 mod6best_predN <- model6(best.param6[,1], gray)
 lines(x=gray$year, y=mod6best_predN, lwd=2, col="red")
 ```
-
-# add your plot code here
 
