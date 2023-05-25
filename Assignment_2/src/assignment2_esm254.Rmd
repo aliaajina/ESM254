@@ -284,10 +284,12 @@ model4 <- function(pars, dat) {
   
   predicted_N[1] <- N0
   
-  for (i in 2:length(dat$year)) {
+  for (i in 2:length(dat$year)) { {
     predicted_N[i] <- predicted_N[i-1] + r * predicted_N[i-1] * (1 - (predicted_N[i-1] / K)^z) - dat$catches[i-1]
   }
-  # add your code here
+    if (predicted_N[i] <= 0) {
+      predicted_N[i] <- 0
+    }}
   
   return(predicted_N)
 }
@@ -428,7 +430,7 @@ model6 <- function(pars, dat) {
   r <- pars[1]
   K <- 100670
   z <- pars[2]
-  x <- pars[3]
+  X <- pars[3]
    
   predicted_N <- rep(NA, length(dat$year))
   
@@ -436,11 +438,16 @@ model6 <- function(pars, dat) {
   
     for (i in 2:length(dat$year)) {
     if(dat$year[i] <= 1950){
-   predicted_N[i] <- predicted_N[i-1] + r * predicted_N[i-1] * (1 - (predicted_N[i-1] / K)^z) - dat$catches[i-1]*x
+   predicted_N[i] <- predicted_N[i-1] + r * predicted_N[i-1] * (1 - (predicted_N[i-1] / K)^z) - (dat$catches[i-1]*X)
     }
     else{
    predicted_N[i] <- predicted_N[i-1] + r * predicted_N[i-1] * (1 - (predicted_N[i-1] / K)^z) - dat$catches[i-1]
-   }}
+    }
+      if (predicted_N[i] <= 0) {
+      predicted_N[i] <- 0
+    }
+
+ }
   
   return(predicted_N)
 }
