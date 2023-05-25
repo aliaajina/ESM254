@@ -499,3 +499,7 @@ mod6best_predN <- model6(best.param6, gray)
 lines(x=gray$year, y=mod6best_predN, lwd=2, col="red")
 ```
 
+Part 3: How do the model fits look?
+Based on the graphs you produced, which model hypotheses look like the fit the model best? We will discuss a more formal method for comparing these models after this assignment is due!
+
+Model 6 fit the model the best - followed by model 5. 
