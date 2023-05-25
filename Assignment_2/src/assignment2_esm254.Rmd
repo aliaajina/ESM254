@@ -20,7 +20,7 @@ library(tidyverse)
 library(janitor)
 ```
 
-#### Part 1: Data ####
+## Part 1: Data
 
 ```{r}
 # Reading in the data
@@ -42,9 +42,9 @@ ggplot(data = gray, aes(y= estimated_abundance, x = year)) +
 ```
 
 
-#### Part 2: Model hypotheses ####
+## Part 2: Model hypotheses
 
-## Model 1: Logistic ####
+# Model 1: Logistic
 
 ```{r}
 
@@ -118,7 +118,7 @@ lines(x=gray$year, y=mod1best_predN, lwd=2, col="blue")
 
 
 
-## Model 2: Pella-Tomlinson 0.60K ####
+# Model 2: Pella-Tomlinson 0.60K
 
 ```{r}
 pars <- c(0.01, 10000)# initial test values
@@ -189,7 +189,7 @@ lines(x=gray$year, y=mod2best_predN, lwd=2, col="red")
 ```
 
 
-## Model 3: Pella-Tomlinson 0.5-0.9K ####
+# Model 3: Pella-Tomlinson 0.5-0.9K
 
 ```{r}
 # error code in this function
@@ -269,7 +269,7 @@ lines(x=gray$year, y=mod3best_predN, lwd=2, col="red")
 
 
 
-## Model 4: Pella-Tomlinson 0.5-0.9K with N0 #### 
+# Model 4: Pella-Tomlinson 0.5-0.9K with N0
 ```{r}
 pars <- c(0.01, 10000, 35, 10000) # initial test values
 
@@ -345,7 +345,7 @@ lines(x=gray$year, y=mod4best_predN, lwd=2, col="red")
 ```
 
 
-## Model 5: Pella-Tomlinson 0.5-0.9K with N0=K #### 
+# Model 5: Pella-Tomlinson 0.5-0.9K with N0=K
 
 ```{r}
 pars <- log(c(.01,1)) # initial parameter values in logspace (makes estimation easier)
@@ -418,7 +418,7 @@ lines(x=gray$year, y=mod5best_predN, lwd = 2, col="red")
 ```
 
 
-## Model 6: Pella-Tomlinson with inflated catches ####
+# Model 6: Pella-Tomlinson with inflated catches
 
 ```{r}
 
@@ -499,7 +499,7 @@ mod6best_predN <- model6(best.param6, gray)
 lines(x=gray$year, y=mod6best_predN, lwd=2, col="red")
 ```
 
-Part 3: How do the model fits look?
-Based on the graphs you produced, which model hypotheses look like the fit the model best? We will discuss a more formal method for comparing these models after this assignment is due!
+## Part 3: How do the model fits look?
 
-Model 6 fit the model the best - followed by model 5. 
+According to our graphs, model 6, Pella-Tomlinson with inflated catches fit the model best. This was followed by Model 5: Pella-Tomlinson 0.5-0.9K with N0=K, which diverged slightly through time from it's coded model. It would be interesting to analyze these predicted models with their coded models using a sensitivity analysis to better understand how they differ (the predicted models from the coded models).
+
